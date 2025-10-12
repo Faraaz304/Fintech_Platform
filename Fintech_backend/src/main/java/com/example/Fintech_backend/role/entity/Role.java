@@ -1,6 +1,5 @@
 package com.example.Fintech_backend.role.entity;
 
-import org.hibernate.validator.constraints.UniqueElements;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
