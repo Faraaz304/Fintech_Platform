@@ -1,6 +1,5 @@
 package com.example.Fintech_backend.auth_user.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -8,13 +7,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@JsonIgnoreProperties(ignoreUnknown = true)
+@AllArgsConstructor
+@NoArgsConstructor
+public class LoginRequest {
 
-public class PasswordResetRequest {
-
+    @NotBlank(message = "Email is required")
+    @Email
     private String email;
 
-    private String code;
-
-    private String newPassword;
+    @NotBlank(message = "Password is required")
+    private String password;
 }
