@@ -13,7 +13,7 @@ import org.modelmapper.convention.MatchingStrategies;
 public class AppConfig {
 
     @Bean
-    public TemplateEngine templateEngine() {
+    public TemplateEngine customTemplateEngine() {
         TemplateEngine templateEngine = new TemplateEngine();
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setPrefix("templates/");

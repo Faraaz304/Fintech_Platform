@@ -4,9 +4,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.boot.autoconfigure.pulsar.PulsarProperties.Transaction;
-
 import com.example.Fintech_backend.auth_user.entity.User;
+import com.example.Fintech_backend.transaction.entity.Transaction;
 import com.example.Fintech_backend.enums.AccountStatus;
 import com.example.Fintech_backend.enums.AccountType;
 import com.example.Fintech_backend.enums.Currency;
@@ -60,9 +59,9 @@ public class Account {
     private AccountStatus accountStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id",nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Transaction> transactions = new ArrayList<>();
 }
