@@ -4,18 +4,15 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.springframework.boot.autoconfigure.pulsar.PulsarProperties.Transaction;
-
 import com.example.Fintech_backend.auth_user.dto.UserDto;
-import com.example.Fintech_backend.auth_user.entity.User;
 import com.example.Fintech_backend.enums.AccountStatus;
 import com.example.Fintech_backend.enums.AccountType;
 import com.example.Fintech_backend.enums.Currency;
+import com.example.Fintech_backend.transaction.dto.TransactionDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.databind.annotation.JsonAppend;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,15 +35,14 @@ public class AccountDto {
     private UserDto user;
 
     private Currency currency;
-    private BigDecimal balance ;
+    private BigDecimal balance;
     private AccountStatus Status;
 
     @JsonManagedReference
-    // private List<TransactionDto>  transactions;
+    private List<TransactionDto> transactions;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime closedAt;
-
 
 }
