@@ -42,8 +42,8 @@ public class AccountDto {
     private AccountStatus Status;
 
     @JsonManagedReference
-    private List<TransactionDto>  transactions;
-    
+    // private List<TransactionDto>  transactions;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime closedAt;
