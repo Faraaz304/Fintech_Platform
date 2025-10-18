@@ -17,14 +17,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
 
-    private RoleRepo roleRepo;
+    private final RoleRepo roleRepo;
 
     @Override
     public Response<Role> createRole(Role roleRequest) {
         if (roleRepo.findByName(roleRequest.getName()).isPresent()) {
             throw new BadRequestException("Role already exists");
         }
-        
+
         Role savedRole = roleRepo.save(roleRequest);
         return Response.<Role>builder()
                 .statusCode(HttpStatus.CREATED.value())
@@ -38,7 +38,7 @@ public class RoleServiceImpl implements RoleService {
         if (roleRequest.getId() == null) {
             throw new BadRequestException("Role ID is required");
         }
-        
+
         if (!roleRepo.existsById(roleRequest.getId())) {
             throw new NotFoundException("Role not found");
         }
@@ -66,7 +66,7 @@ public class RoleServiceImpl implements RoleService {
         if (!roleRepo.existsById(id)) {
             throw new NotFoundException("Role not found");
         }
-        
+
         roleRepo.deleteById(id);
         return Response.builder()
                 .statusCode(HttpStatus.OK.value())
