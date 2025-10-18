@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.Fintech_backend.exceptions.BadRequestException;
 import com.example.Fintech_backend.exceptions.NotFoundException;
