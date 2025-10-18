@@ -50,15 +50,15 @@ public class NotificationServiceImpl implements NotificationService {
                 helper.setText(NotificationDto.getBody(), true);
             }
             mailSender.send(mimeMessage);
-            // Notification notificationToSave = Notification.builder()
-            //         .subject(NotificationDto.getSubject())
-            //         .recipient(NotificationDto.getRecipient())
-            //         .body(NotificationDto.getBody())
-            //         .type(NotificationType.EMAIL)
-            //         .user(user)
-            //         .build();
+            Notification notificationToSave = Notification.builder()
+                    .subject(NotificationDto.getSubject())
+                    .recipient(NotificationDto.getRecipient())
+                    .body(NotificationDto.getBody())
+                    .type(NotificationType.EMAIL)
+                    .user(user)
+                    .build();
 
-            // notificationRepo.save(notificationToSave);
+            notificationRepo.save(notificationToSave);
 
         } catch (MessagingException e) {
             log.error("Error sending email", e);
