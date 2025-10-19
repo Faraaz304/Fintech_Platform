@@ -3,6 +3,7 @@ package com.example.Fintech_backend.auth_user.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.example.Fintech_backend.account.dto.AccountDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -45,7 +46,7 @@ public class UserDto {
     private List<String> roles;
 
     // Uncomment when AccountDto is created
-    // private List<AccountDto> accounts;
+    private List<AccountDto> accounts;
 
     private LocalDateTime createdAt;
 
