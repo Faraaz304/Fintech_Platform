@@ -32,9 +32,9 @@ public class TokenService {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(String username) {
         return Jwts.builder()
-                .subject(userDetails.getUsername())
+                .subject(username)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + Long.parseLong(JWT_EXPIRATION_TIME)))
                 .signWith(key)
