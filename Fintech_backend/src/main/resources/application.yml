@@ -39,3 +39,7 @@ server:
 jwt:
   secret: ${JWT_SECRET}
   expiration: ${JWT_EXPIRATION}
+
+app:
+  password-reset:
+    link: ${PASSWORD_RESET_LINK:http://localhost:3000/reset-password?code=}

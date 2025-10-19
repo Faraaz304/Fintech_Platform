@@ -5,9 +5,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,9 +25,10 @@ import com.example.Fintech_backend.auth_user.entity.User;
 import com.example.Fintech_backend.auth_user.repository.PasswordResetCodeRepo;
 import com.example.Fintech_backend.auth_user.repository.UserRepo;
 import com.example.Fintech_backend.auth_user.service.AuthService;
+import com.example.Fintech_backend.auth_user.service.CodeGenerator;
 import com.example.Fintech_backend.enums.AccountStatus;
 import com.example.Fintech_backend.enums.AccountType;
-import com.example.Fintech_backend.enums.NotificationType;
+
 import com.example.Fintech_backend.exceptions.BadRequestException;
 import com.example.Fintech_backend.exceptions.NotFoundException;
 import com.example.Fintech_backend.notification.dto.NotificationDto;
@@ -36,8 +37,6 @@ import com.example.Fintech_backend.res.Response;
 import com.example.Fintech_backend.role.entity.Role;
 import com.example.Fintech_backend.role.repository.RoleRepo;
 import com.example.Fintech_backend.enums.Currency;
-import com.example.Fintech_backend.role.entity.Role;
-import com.example.Fintech_backend.role.repository.RoleRepo;
 import com.example.Fintech_backend.security.TokenService;
 
 import lombok.RequiredArgsConstructor;
@@ -52,11 +51,15 @@ public class AuthServiceImpl implements AuthService {
         private final UserRepo userRepo;
         private final RoleRepo roleRepo;
         private final PasswordResetCodeRepo passwordResetCodeRepo;
+        private final CodeGenerator codeGenerator;
         private final PasswordEncoder passwordEncoder;
         private final AuthenticationManager authenticationManager;
         private final TokenService tokenService;
         private final NotificationService notificationService;
         private final AccountRepo accountRepo;
+
+        @Value("${app.password-reset.link}")
+        private String passwordResetLink;
 
         @Override
         public Response<String> register(RegistrationRequest request) {
@@ -174,41 +177,35 @@ public class AuthServiceImpl implements AuthService {
 
         @Override
         public Response<?> forgetPassword(String email) {
-                log.info("Password reset requested for email: {}", email);
-
                 User user = userRepo.findByEmail(email)
-                                .orElseThrow(() -> new NotFoundException("User not found with email: " + email));
+                                .orElseThrow(() -> new NotFoundException("User Not Found"));
 
-                // Delete any existing reset codes for this user
                 passwordResetCodeRepo.deleteByUserId(user.getId().longValue());
 
-                // Generate reset code
-                String resetCode = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+                String code = codeGenerator.generateUniqueCode();
 
-                // Create password reset code entity
-                PasswordResetCode passwordResetCode = PasswordResetCode.builder()
-                                .code(resetCode)
+                PasswordResetCode resetCode = PasswordResetCode.builder()
                                 .user(user)
-                                .expiryDate(LocalDateTime.now().plusHours(1)) // 1 hour expiry
+                                .code(code)
+                                .expiryDate(calculateExpiryDate())
                                 .used(false)
                                 .build();
 
-                passwordResetCodeRepo.save(passwordResetCode);
+                passwordResetCodeRepo.save(resetCode);
 
-                // Send email notification
-                try {
-                        NotificationDto notificationDto = NotificationDto.builder()
-                                        .recipient(email)
-                                        .subject("Password Reset Code")
-                                        .body(buildPasswordResetEmailBody(user.getFirstname(), resetCode))
-                                        .type(NotificationType.EMAIL)
-                                        .build();
+                // send email reset link out
+                Map<String, Object> templateVariables = new HashMap<>();
+                templateVariables.put("name", user.getFirstname());
+                templateVariables.put("resetLink", passwordResetLink + code);
 
-                        notificationService.sendEmail(notificationDto, user);
-                        log.info("Password reset email sent to: {}", email);
-                } catch (Exception e) {
-                        log.error("Failed to send password reset email to: {}", email, e);
-                }
+                NotificationDto notificationDTO = NotificationDto.builder()
+                                .recipient(user.getEmail())
+                                .subject("Password Reset Code")
+                                .templateName("password-reset")
+                                .templateVariables(templateVariables)
+                                .build();
+
+                notificationService.sendEmail(notificationDTO, user);
 
                 return Response.builder()
                                 .statusCode(HttpStatus.OK.value())
@@ -249,6 +246,20 @@ public class AuthServiceImpl implements AuthService {
                 resetCode.setUsed(true);
                 passwordResetCodeRepo.save(resetCode);
 
+                // Send password reset confirmation email using HashMap pattern
+                Map<String, Object> confirmationVars = new HashMap<>();
+                confirmationVars.put("name", user.getFirstname());
+                confirmationVars.put("resetTime", LocalDateTime.now().toString());
+
+                NotificationDto confirmationNotification = NotificationDto.builder()
+                                .recipient(user.getEmail())
+                                .subject("Password Reset Successful")
+                                .body("Your password has been successfully reset. If you did not make this change, please contact support immediately.")
+                                .templateVariables(confirmationVars)
+                                .build();
+
+                notificationService.sendEmail(confirmationNotification, user);
+
                 log.info("Password updated successfully for user: {}", user.getEmail());
 
                 return Response.<String>builder()
@@ -258,23 +269,8 @@ public class AuthServiceImpl implements AuthService {
                                 .build();
         }
 
-        private String buildPasswordResetEmailBody(String firstName, String resetCode) {
-                return String.format(
-                                """
-                                                <html>
-                                                <body>
-                                                    <h2>Password Reset Request</h2>
-                                                    <p>Hello %s,</p>
-                                                    <p>You have requested to reset your password. Please use the following code to reset your password:</p>
-                                                    <h3 style="color: #007bff; font-size: 24px; letter-spacing: 2px;">%s</h3>
-                                                    <p>This code will expire in 1 hour.</p>
-                                                    <p>If you did not request this password reset, please ignore this email.</p>
-                                                    <br>
-                                                    <p>Best regards,<br>Fintech Team</p>
-                                                </body>
-                                                </html>
-                                                """,
-                                firstName != null ? firstName : "User", resetCode);
+        private LocalDateTime calculateExpiryDate() {
+                return LocalDateTime.now().plusHours(1); // 1 hour expiry
         }
 
         private String generateAccountNumber() {
