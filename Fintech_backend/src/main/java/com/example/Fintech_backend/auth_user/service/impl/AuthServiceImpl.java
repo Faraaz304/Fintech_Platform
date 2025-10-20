@@ -86,8 +86,8 @@ public class AuthServiceImpl implements AuthService {
 
                 // Create user
                 User user = User.builder()
-                                .firstname(request.getFirstName())
-                                .lastname(request.getLastName())
+                                .firstName(request.getFirstName())
+                                .lastName(request.getLastName())
                                 .email(request.getEmail())
                                 .phoneNumber(request.getPhoneNumber())
                                 .password(passwordEncoder.encode(request.getPassword()))
@@ -113,7 +113,7 @@ public class AuthServiceImpl implements AuthService {
                 Account savedAccount = accountRepo.save(account);
 
                 Map<String, Object> Vars = new HashMap<>();
-                Vars.put("name", savedUser.getFirstname());
+                Vars.put("name", savedUser.getFirstName());
 
                 // Send welcome email
                 NotificationDto notificationDto = NotificationDto.builder()
@@ -129,7 +129,7 @@ public class AuthServiceImpl implements AuthService {
                 Map<String, Object> accountVars = new HashMap<>();
                 accountVars.put("accountNumber", savedAccount.getAccountNumber());
                 accountVars.put("accountType", AccountType.SAVINGS.name());
-                accountVars.put("name", savedUser.getFirstname());
+                accountVars.put("name", savedUser.getFirstName());
                 accountVars.put("currency", Currency.USD.name());
 
                 NotificationDto accountCratedEmail = NotificationDto.builder()
@@ -196,7 +196,7 @@ public class AuthServiceImpl implements AuthService {
 
                 // send email reset link out
                 Map<String, Object> templateVariables = new HashMap<>();
-                templateVariables.put("name", user.getFirstname());
+                templateVariables.put("name", user.getFirstName());
                 templateVariables.put("resetLink", passwordResetLink + code);
 
                 NotificationDto notificationDTO = NotificationDto.builder()
@@ -250,7 +250,7 @@ public class AuthServiceImpl implements AuthService {
 
                 // Send password reset confirmation email using HashMap pattern
                 Map<String, Object> confirmationVars = new HashMap<>();
-                confirmationVars.put("name", user.getFirstname());
+                confirmationVars.put("name", user.getFirstName());
                 confirmationVars.put("resetTime", LocalDateTime.now().toString());
 
                 NotificationDto confirmationNotification = NotificationDto.builder()

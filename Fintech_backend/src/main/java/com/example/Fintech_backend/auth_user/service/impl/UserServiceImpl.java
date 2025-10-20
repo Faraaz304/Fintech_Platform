@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
 
         // Send password change confirmation email
         Map<String, Object> templateVariables = new HashMap<>();
-        templateVariables.put("name", user.getFirstname());
+        templateVariables.put("name", user.getFirstName());
 
         NotificationDto notificationDto = NotificationDto.builder()
                 .recipient(user.getEmail())
