@@ -53,7 +53,7 @@ public class AuthServiceImpl implements AuthService {
         private final PasswordResetCodeRepo passwordResetCodeRepo;
         private final CodeGenerator codeGenerator;
         private final PasswordEncoder passwordEncoder;
-        private final AuthenticationManager authenticationManager;
+        private final AuthService authService;
         private final TokenService tokenService;
         private final NotificationService notificationService;
         private final AccountRepo accountRepo;
