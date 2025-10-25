@@ -6,14 +6,12 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
 
 import com.example.Fintech_backend.account.dto.AccountDto;
 import com.example.Fintech_backend.account.repository.AccountRepo;
 import com.example.Fintech_backend.auth_user.dto.UserDto;
 import com.example.Fintech_backend.auth_user.repository.UserRepo;
 import com.example.Fintech_backend.transaction.dto.TransactionDto;
-import com.example.Fintech_backend.transaction.entity.Transaction;
 import com.example.Fintech_backend.transaction.repository.TransactionRepo;
 
 import lombok.RequiredArgsConstructor;
