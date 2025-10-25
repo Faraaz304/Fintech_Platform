@@ -91,7 +91,7 @@ public class AuditController {
     }
 
     // ✅ Find all transactions by account number
-    @GetMapping("/transactions")
+    @GetMapping("/transactions/by-account")
     public ResponseEntity<List<TransactionDto>> findTransactionsByAccount(@RequestParam String accountNumber) {
         List<TransactionDto> transactions = auditService.findTransactionByAccountNumber(accountNumber);
         return ResponseEntity.ok(transactions);
