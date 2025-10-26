@@ -1,48 +1,4 @@
-// package com.example.Fintech_backend.audit_dashboard.controller;
-
-// import java.util.Map;
-
-// import org.hibernate.annotations.RowId;
-// import org.springframework.http.ResponseEntity;
-// import org.springframework.security.access.prepost.PreAuthorize;
-// import org.springframework.web.bind.annotation.RestController;
-
-// import com.example.Fintech_backend.audit_dashboard.service.Audit_Service;
-// import com.example.Fintech_backend.auth_user.dto.UserDto;
-
-// import lombok.RequiredArgsConstructor;
-// import org.springframework.web.bind.annotation.RequestMapping;
-// import org.springframework.web.bind.annotation.RequestMethod;
-// import org.springframework.web.bind.annotation.RequestParam;
-// import org.springframework.web.bind.annotation.GetMapping;
-
-
-
-// @RestController
-// @RequestMapping("/api/audit")
-// @PreAuthorize("hasAuthority('AUDITOR') or hasAuthority('ADMIN')")
-// @RequiredArgsConstructor
-// public class AuditController {
-    
-//     private final Audit_Service auditService;
-
-   
-    
-//     @GetMapping("/totals")
-//     public ResponseEntity<Map<String,Long>> getSystemTotals(){
-//         return ResponseEntity.ok(auditService.getSystemTotals());
-//     }
-//     @GetMapping("/users")
-//     public ResponseEntity<UserDto> findByemails(String email){
-//         return ResponseEntity.ok(auditService.findUserbyEmail(email).get());
-//     }
-
-//     @GetMapping("/accounts")
-//     public ResponseEntity<Map<String,Long>> getSystemTotals(@RequestParam String accountNumber){
-//         return ResponseEntity.ok(auditService.getSystemTotals());
-    
-// }
-
+// made litte change in this file 
 
 package com.example.Fintech_backend.audit_dashboard.controller;
 
@@ -98,8 +54,8 @@ public class AuditController {
     }
 
     // ✅ Find transaction by ID
-    @GetMapping("/transaction/{id}")
-    public ResponseEntity<?> findTransactionById(@PathVariable Long id) {
+    @GetMapping("/transaction/by-id")
+    public ResponseEntity<?> findTransactionById(@RequestParam Long id) {
         Optional<TransactionDto> transaction = auditService.findTransactionById(id);
         return transaction.map(ResponseEntity::ok)
                           .orElse(ResponseEntity.notFound().build());
