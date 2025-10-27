@@ -15,11 +15,14 @@ const Header = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-6">
-          <Link href="/personal" className="hover:text-blue-200 transition-colors">Personal</Link>
-          <Link href="/business" className="hover:text-blue-200 transition-colors">Business</Link>
-          <Link href="/loans" className="hover:text-blue-200 transition-colors">Loans</Link>
-          <Link href="/about" className="hover:text-blue-200 transition-colors">About Us</Link>
-          <Link href="/contact" className="hover:text-blue-200 transition-colors">Contact</Link>
+
+          <Link href="/contact" className="hover:text-blue-200 transition-colors">Home</Link>
+          <Link href="/contact" className="hover:text-blue-200 transition-colors">Profile</Link>
+          <Link href="/contact" className="hover:text-blue-200 transition-colors">Transfer</Link>
+          <Link href="/contact" className="hover:text-blue-200 transition-colors">Transaction</Link>
+          <Link href="/contact" className="hover:text-blue-200 transition-colors">Auditor Dashboard</Link>
+          {/* <Link href="/contact" className="hover:text-blue-200 transition-colors">Logout</Link> */}
+
         </nav>
 
         {/* CTA Buttons */}
