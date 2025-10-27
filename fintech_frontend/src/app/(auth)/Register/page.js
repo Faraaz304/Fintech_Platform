@@ -16,17 +16,44 @@ const RegisterPage = () => {
         <form className="mt-8 space-y-6">
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
-              <label htmlFor="full-name" className="sr-only">Full Name</label>
+              <label htmlFor="First-name" className="sr-only">First Name</label>
               <input
-                id="full-name"
-                name="fullname"
+                id="First-name"
+                name="Firstname"
                 type="text"
                 autoComplete="name"
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="Full Name"
+                placeholder="First Name"
               />
             </div>
+            <div>
+              <label htmlFor="Last-name" className="sr-only">Last Name</label>
+              <input
+                id="Last-name"
+                name="Lastname"
+                type="text"
+                autoComplete="name"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                placeholder="Last Name"
+              />
+            </div>
+            <div>
+              <label htmlFor="full-name" className="sr-only">Phone Number</label>
+              <input
+                id="PhoneNumber"
+                name="PhoneNumber"
+                type="text"
+                autoComplete="name"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                placeholder="PhoneNumber"
+              />
+            </div>
+
+
+
             <div>
               <label htmlFor="email-address" className="sr-only">Email address</label>
               <input
@@ -65,13 +92,14 @@ const RegisterPage = () => {
             </div>
           </div>
 
-          <div>
-            <button
-              type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Create Account
-            </button>
+           <div>
+            <Link href="/Login" legacyBehavior>
+              <button
+                type="submit"
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                Create Account
+              </button>
+            </Link>
           </div>
         </form>
 
@@ -79,7 +107,7 @@ const RegisterPage = () => {
         <div className="text-center text-sm text-gray-600">
           <p>
             Already have an account?{' '}
-            <Link href="/auth/Login" legacyBehavior>
+            <Link href="/Login" legacyBehavior>
               <a className="font-medium text-blue-600 hover:text-blue-500">
                 Sign in
               </a>

@@ -43,7 +43,7 @@ const LoginPage = () => {
 
           <div className="flex items-center justify-between">
             <div className="text-sm">
-              <Link href="/auth/forgot-password" legacyBehavior>
+              <Link href="/forgot-password" legacyBehavior>
                 <a className="font-medium text-blue-600 hover:text-blue-500">
                   Forgot your password?
                 </a>
@@ -52,12 +52,13 @@ const LoginPage = () => {
           </div>
 
           <div>
-            <button
-              type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Sign in
-            </button>
+            <Link href="/" legacyBehavior>
+              <button
+                type="submit"
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                Sign in
+              </button>
+            </Link>
           </div>
         </form>
 
@@ -65,7 +66,7 @@ const LoginPage = () => {
         <div className="text-center text-sm text-gray-600">
           <p>
             Don't have an account?{' '}
-            <Link href="/auth/Register" legacyBehavior>
+            <Link href="/Register" legacyBehavior>
               <a className="font-medium text-blue-600 hover:text-blue-500">
                 Sign up
               </a>
