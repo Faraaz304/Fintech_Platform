@@ -27,10 +27,10 @@ const Header = () => {
 
         {/* CTA Buttons */}
         <div className="hidden md:flex items-center space-x-4">
-          <Link href="/auth/login" className="bg-gray-100 text-blue-800 py-2 px-4 rounded-md font-semibold hover:bg-gray-200 transition-colors">
+          <Link href="/Login" className="bg-gray-100 text-blue-800 py-2 px-4 rounded-md font-semibold hover:bg-gray-200 transition-colors">
             Login
           </Link>
-          <Link href="/auth/register" className="bg-blue-600 text-white py-2 px-4 rounded-md font-semibold hover:bg-blue-700 transition-colors">
+          <Link href="/Register" className="bg-blue-600 text-white py-2 px-4 rounded-md font-semibold hover:bg-blue-700 transition-colors">
             Open Account
           </Link>
         </div>
