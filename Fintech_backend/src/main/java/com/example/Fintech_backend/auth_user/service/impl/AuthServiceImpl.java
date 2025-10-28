@@ -179,40 +179,43 @@ public class AuthServiceImpl implements AuthService {
         @Override
         @Transactional
         public Response<?> forgetPassword(String email) {
-                User user = userRepo.findByEmail(email)
-                                .orElseThrow(() -> new NotFoundException("User Not Found"));
+        User user = userRepo.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("User Not Found"));
 
-                passwordResetCodeRepo.deleteByUserId(user.getId().longValue());
+        passwordResetCodeRepo.deleteByUserId(user.getId().longValue());
 
-                String code = codeGenerator.generateUniqueCode();
+        String code = codeGenerator.generateUniqueCode();
 
-                PasswordResetCode resetCode = PasswordResetCode.builder()
-                                .user(user)
-                                .code(code)
-                                .expiryDate(calculateExpiryDate())
-                                .used(false)
-                                .build();
+        PasswordResetCode resetCode = PasswordResetCode.builder()
+                .user(user)
+                .code(code)
+                .expiryDate(calculateExpiryDate())
+                .used(false)
+                .build();
 
-                passwordResetCodeRepo.save(resetCode);
+        passwordResetCodeRepo.save(resetCode);
 
-                // send email reset link out
-                Map<String, Object> templateVariables = new HashMap<>();
-                templateVariables.put("name", user.getFirstName());
-                templateVariables.put("resetLink", passwordResetLink + code);
+        // ✅ CHANGED: include both email and code in reset link (frontend expects this)
+        // Example link:
+        // http://localhost:3000/reset-password?email=user@example.com&code=XYZ123
+        Map<String, Object> templateVariables = new HashMap<>();
+        templateVariables.put("name", user.getFirstName());
+        templateVariables.put("resetLink",
+                passwordResetLink + "?email=" + user.getEmail() + "&code=" + code);
 
-                NotificationDto notificationDTO = NotificationDto.builder()
-                                .recipient(user.getEmail())
-                                .subject("Password Reset Code")
-                                .templateName("password-reset")
-                                .templateVariables(templateVariables)
-                                .build();
+        NotificationDto notificationDTO = NotificationDto.builder()
+                .recipient(user.getEmail())
+                .subject("Password Reset Code")
+                .templateName("password-reset")
+                .templateVariables(templateVariables)
+                .build();
 
-                notificationService.sendEmail(notificationDTO, user);
+        notificationService.sendEmail(notificationDTO, user);
 
-                return Response.builder()
-                                .statusCode(HttpStatus.OK.value())
-                                .message("Password reset code sent to your email")
-                                .build();
+        return Response.builder()
+                .statusCode(HttpStatus.OK.value())
+                .message("Password reset code sent to your email")
+                .build();
         }
 
         @Override
