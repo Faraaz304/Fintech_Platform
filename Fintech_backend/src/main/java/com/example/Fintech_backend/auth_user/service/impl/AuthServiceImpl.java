@@ -116,12 +116,13 @@ public class AuthServiceImpl implements AuthService {
                 // Send welcome email
                 NotificationDto notificationDto = NotificationDto.builder()
                                 .recipient(savedUser.getEmail())
-                                .subject("Welcome to Fintech")
-                                .body("Thank you for registering with us. Your account has been created successfully.")
+                                .subject("Welcome to Phegon Bank 🎉")
+                                .templateName("welcome")
                                 .templateVariables(Vars)
                                 .build();
 
                 notificationService.sendEmail(notificationDto, savedUser);
+
                 // send account creation details email
 
                 Map<String, Object> accountVars = new HashMap<>();
@@ -129,11 +130,13 @@ public class AuthServiceImpl implements AuthService {
                 accountVars.put("accountType", AccountType.SAVINGS.name());
                 accountVars.put("name", savedUser.getFirstName());
                 accountVars.put("currency", Currency.USD.name());
+                accountVars.put("balance", savedAccount.getBalance());
+                accountVars.put("accountStatus", savedAccount.getAccountStatus().name());
 
                 NotificationDto accountCratedEmail = NotificationDto.builder()
                                 .recipient(savedUser.getEmail())
                                 .subject("your account has beeen created")
-                                .body("accpount created")
+                                .templateName("account-created")
                                 .templateVariables(accountVars)
                                 .build();
 
@@ -254,7 +257,9 @@ public class AuthServiceImpl implements AuthService {
                 NotificationDto confirmationNotification = NotificationDto.builder()
                                 .recipient(user.getEmail())
                                 .subject("Password Reset Successful")
-                                .body("Your password has been successfully reset. If you did not make this change, please contact support immediately.")
+                                .templateName("password-update-confirmation")
+                                // .body("Your password has been successfully reset. If you did not make this
+                                // change, please contact support immediately.")
                                 .templateVariables(confirmationVars)
                                 .build();
 
